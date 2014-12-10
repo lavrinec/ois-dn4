@@ -141,23 +141,36 @@ $("#najdi").click(function(){
 $('#napredek').progress({
   percent: 1
 });
-$("#rezultatiIskanja").html('Nalagam');
+$("#nakladanje").show();
 $.ajaxPrefilter(function(options) {
   if(options.crossDomain && jQuery.support.cors) {
     var http = (window.location.protocol === 'http:' ? 'http:' : 'https:');
     options.url = http + '//cors-anywhere.herokuapp.com/' + options.url;
+	$('#napredek').progress({
+  percent: 15
+});
     //options.url = "http://cors.corsproxy.io/url=" + options.url;
   }
 });
 $.get(
     'http://www.zdravniskazbornica.si/iskalnik/iskalnik.aspx?priimek='+$("#priimekZdravnika").val()+'&licencaId='+$("#DdlSpecialnost").val(),
     function(response) {
+	$('#napredek').progress({
+  percent: 60
+});
         $(response).find("#tblEmpty").each(function(){
 			$(rezultatiIskanja).html(this);
 		});
+		$('#napredek').progress({
+  percent: 80
+});
 		 $(response).find("#LvZdravniki_groupPlaceholderContainer").each(function(){
 			$(rezultatiIskanja).html(this);
 		});
+		$('#napredek').progress({
+  percent: 100
+});
+		$("#nakladanje").hide();
 });
 $('#napredek').progress({
   percent: 100
