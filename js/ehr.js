@@ -36,16 +36,25 @@ $(document)
 		$(".pregled").show();
 		$(".dodajBolnika").hide();
 		$(".dodajMeritev").hide();
+		$(".najdiZdravnika").hide();
 	});
 	$("#dodajBolnika").click(function(){
 		$(".pregled").hide();
 		$(".dodajBolnika").show();
 		$(".dodajMeritev").hide();
+		$(".najdiZdravnika").hide();
 	});
 	$("#dodajMeritev").click(function(){
 		$(".pregled").hide();
 		$(".dodajBolnika").hide();
 		$(".dodajMeritev").show();
+		$(".najdiZdravnika").hide();
+	});
+	$("#najdiZdravnika").click(function(){
+		$(".pregled").hide();
+		$(".dodajBolnika").hide();
+		$(".dodajMeritev").hide();
+		$(".najdiZdravnika").show();
 	});
 	$('.ui.dropdown')
       .dropdown()
@@ -128,4 +137,35 @@ $('#napredek').progress({
     }
 });
 });
+$("#najdi").click(function(){
+$('#napredek').progress({
+  percent: 1
+});
+$("#rezultatiIskanja").html('Nalagam');
+$.ajaxPrefilter(function(options) {
+  if(options.crossDomain && jQuery.support.cors) {
+    var http = (window.location.protocol === 'http:' ? 'http:' : 'https:');
+    options.url = http + '//cors-anywhere.herokuapp.com/' + options.url;
+    //options.url = "http://cors.corsproxy.io/url=" + options.url;
+  }
+});
+$.get(
+    'http://www.zdravniskazbornica.si/iskalnik/iskalnik.aspx?priimek='+$("#priimekZdravnika").val()+'&licencaId='+$("#DdlSpecialnost").val(),
+    function(response) {
+        $(response).find("#tblEmpty").each(function(){
+			$(rezultatiIskanja).html(this);
+		});
+		 $(response).find("#LvZdravniki_groupPlaceholderContainer").each(function(){
+			$(rezultatiIskanja).html(this);
+		});
+});
+$('#napredek').progress({
+  percent: 100
+});
+});
   });
+function showUser(str) {
+$('#napredek').progress({
+  percent: 99
+});
+}

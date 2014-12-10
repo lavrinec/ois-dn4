@@ -27,22 +27,17 @@
   <a class="active item" id="pregled">Pregled bolnikov</a>
   <a class="item" id="dodajBolnika">Dodajanje bolnikov</a>
   <a class="item" id="dodajMeritev">Dodajanje meritev</a>
+  <a class="item" id="najdiZdravnika">Iskalnik zdravnikov</a>
 </div>
 </center>
 <div class="pregled">
-<center><br>
-<div class="ui searchable floating dropdown labeled button" tabindex="1">
-  <span class="text">Izberite bolnika</span>
-  <div class="menu" tabindex="1">
-    <div class="header">
-      Bolniki
-    </div>
-    <div class="item"><div class="ui red empty circular label"></div>A</div>
-    <div class="item"><div class="ui blue empty circular label"></div>Tag B</div>
-    <div class="item"><div class="ui black empty circular label"></div>Tag C</div>
-    <div class="item"><div class="ui green empty circular label"></div>Tag D</div>
-  </div>
-</div>
+<center><br>Bolniki: 
+<select class="ui searchable floating dropdown labeled button" tabindex="1" onchange="showUser(this.value)">
+    <option class="item" value="5ed818e4-82d0-481d-b838-bf45f8db7082"><div class="ui red empty circular label"></div>Srecko Debevc</option>
+    <option class="item"><div class="ui blue empty circular label"></div>Tag B</option>
+    <option class="item"><div class="ui black empty circular label"></div>Tag C</option>
+    <option class="item"><div class="ui green empty circular label"></div>Tag D</option>
+</select>
 <div class="ui info message"  style="display: none;">
   <div class="header">Info Message</div>
   <p>Example description</p>
@@ -89,9 +84,80 @@
       <label>Datum rojstva</label>
       <input type="text" id="datum" placeholder="1982-7-18T19:30">
     </div>
-  <div class="ui submit button" id="potrdi">Submit</div>
+  <div class="ui submit button" id="potrdi">Shrani</div>
  </div>
 </div>
 <div class="dodajMeritev" style="display: none;"></div>
+<div class="najdiZdravnika" style="display: none;">
+ <div class="ui warning form segment">
+    <div class="field">
+      <label>Priimek</label>
+      <input type="text" id="priimekZdravnika" placeholder="Novak">
+    </div>
+	<div class="field">
+      <label>Licenca</label>
+      <select id="DdlSpecialnost" name="DdlSpecialnost">
+	<option value="-1">-- vse --</option>
+	<option value="1">Abdominalna kirurgija</option>
+	<option value="2" selected="selected">Anesteziologija, reanimatologija in perioperativna intenzivna medicina</option>
+	<option value="3">Čeljustna in zobna ortopedija</option>
+	<option value="4">Dentalna medicina</option>
+	<option value="5">Dermatovenerologija</option>
+	<option value="7">Fizikalna in rehabilitacijska medicina</option>
+	<option value="8">Gastroenterologija</option>
+	<option value="9">Ginekologija in porodništvo</option>
+	<option value="10">Hematologija</option>
+	<option value="11">Infektologija</option>
+	<option value="12">Intenzivna medicina</option>
+	<option value="13">Interna medicina</option>
+	<option value="14">Internistična onkologija</option>
+	<option value="15">Javno zdravje</option>
+	<option value="52">Kardiologija in vaskularna medicina</option>
+	<option value="16">Kardiovaskularna kirurgija</option>
+	<option value="53">Klinična fiziologija</option>
+	<option value="17">Klinična genetika</option>
+	<option value="18">Klinična mikrobiologija</option>
+	<option value="55">Letalska medicina</option>
+	<option value="19">Maksilofacialna kirurgija</option>
+	<option value="20">Medicina dela, prometa in športa</option>
+	<option value="21">Nefrologija</option>
+	<option value="22">Nevrokirurgija</option>
+	<option value="23">Nevrologija</option>
+	<option value="24">Nevropsihiatrija</option>
+	<option value="25">Nuklearna medicina</option>
+	<option value="26">Oftalmologija</option>
+	<option value="27">Onkologija z radioterapijo</option>
+	<option value="28">Oralna kirurgija</option>
+	<option value="29">Ortopedska kirurgija</option>
+	<option value="30">Otorinolaringologija</option>
+	<option value="31">Otroška in mladostniška psihiatrija</option>
+	<option value="32">Otroška nevrologija</option>
+	<option value="33">Otroško in preventivno zobozdravstvo</option>
+	<option value="34">Parodontologija</option>
+	<option value="35">Patologija</option>
+	<option value="36">Pediatrija/Šolska medicina</option>
+	<option value="37">Plastična, rekonstrukcijska in estetska kirurgija</option>
+	<option value="38">Pnevmologija</option>
+	<option value="39">Psihiatrija</option>
+	<option value="40">Radiologija</option>
+	<option value="41">Revmatologija</option>
+	<option value="42">Sodna medicina</option>
+	<option value="43">Splošna kirurgija</option>
+	<option value="44">Splošna medicina </option>
+	<option value="6">Splošna medicina/Družinska medicina (specialist)</option>
+	<option value="45">Stomatološka protetika</option>
+	<option value="46">Torakalna kirurgija</option>
+	<option value="47">Transfuzijska medicina</option>
+	<option value="48">Travmatologija</option>
+	<option value="49">Urgentna medicina</option>
+	<option value="50">Urologija</option>
+	<option value="51">Zobne bolezni in endodontija</option>
+
+</select>
+    </div>
+  <div class="ui submit button" id="najdi">Najdi</div>
+ </div><center>
+ <div id="rezultatiIskanja"></div></center>
+</div>
 </body>
 </html>
