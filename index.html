@@ -29,34 +29,13 @@
   <a class="item" id="dodajMeritev">Dodajanje meritev</a>
   <a class="item" id="najdiZdravnika">Iskalnik zdravnikov</a>
 </div>
-</center>
-<div class="pregled">
-<center><br>Bolniki: 
-<select class="ui searchable floating dropdown labeled button" tabindex="1" onchange="showUser(this.value)">
+<div class="seznam">Bolniki: 
+<select id="seznamBolnikov" class="ui searchable floating dropdown labeled button" tabindex="1" onchange="showUser(this.value)">
     <option class="item" value="5ed818e4-82d0-481d-b838-bf45f8db7082"><div class="ui red empty circular label"></div>Srecko Debevc</option>
     <option class="item"><div class="ui blue empty circular label"></div>Tag B</option>
     <option class="item"><div class="ui black empty circular label"></div>Tag C</option>
     <option class="item"><div class="ui green empty circular label"></div>Tag D</option>
-</select>
-<div class="ui info message"  style="display: none;">
-  <div class="header">Info Message</div>
-  <p>Example description</p>
-</div>
-<div class="ui success message"  style="display: none;">
-  <div class="content">
-    <div class="header">Positive Message</div>
-    <p>Example description</p>
-  </div>
-</div>
-<div class="ui error message"  style="display: none;">
-  <div class="content">
-    <div class="header">Negative Message</div>
-    <p>Example description</p>
-  </div>
-</div>
-</center>
-</div>
-<div class="dodajBolnika" style="display: none;">
+</select></div>
 <div id="opravljeno" class="ui success message"  style="display: none;">
   <div class="content">
     <div class="header">Opravljeno!</div>
@@ -71,30 +50,79 @@
  <br><div class="resultat"></div></p>
   </div>
 </div>
+<div class="pregled">
+<div class="ui info message"  style="display: none;">
+  <div class="header">Info Message</div>
+  <p>Example description</p>
+</div>
+</div>
+<div class="dodajBolnika" style="display: none; width: 85%;">
  <div class="ui warning form segment">
-    <div class="field">
+    <div class="ui right labeled input">
       <label>Ime</label>
       <input type="text" id="ime" placeholder="Janez">
     </div>
-    <div class="field">
+    <div class="ui right labeled input">
       <label>Priimek</label>
       <input type="text" id="priimek" placeholder="Novak">
     </div>
-	<div class="field">
+	<div class="ui right labeled input">
       <label>Datum rojstva</label>
       <input type="text" id="datum" placeholder="1982-7-18T19:30">
     </div>
   <div class="ui submit button" id="potrdi">Shrani</div>
  </div>
 </div>
-<div class="dodajMeritev" style="display: none;"></div>
+<div class="dodajMeritev" style="display: none; width: 85%;"><br>
+ <div class="ui warning form segment">
+	<div class="ui right labeled input">
+      <label>Cas opravljanja meritve</label>
+      <input type="text" id="datumMeritve" placeholder="2014-7-18T19:30">
+    </div>
+	<div class="ui right labeled input">
+	  <label>Telesna višina</label>
+	  <input type="text" id="visina" placeholder="178">
+	  <a class="ui label">cm</a>
+	</div>
+	<div class="ui right labeled input">
+	  <label>Telesna teža</label>
+	  <input type="text" id="teza" placeholder="65">
+	  <a class="ui label">kg</a>
+	</div>
+	<div class="ui right labeled input">
+	  <label>Telesna temperatura</label>
+	  <input type="text" id="temp" placeholder="36.7">
+	  <a class="ui label">°C</a>
+	</div>
+	<div class="ui right labeled input">
+	  <label>Sistolični krvni tlak</label>
+	  <input type="text" id="visoki" placeholder="120">
+	  <a class="ui label">mm Hg</a>
+	</div>
+	<div class="ui right labeled input">
+	  <label>Diastolični krvni tlak</label>
+	  <input type="text" id="niski" placeholder="85">
+	  <a class="ui label">mm Hg</a>
+	</div>
+	<div class="ui right labeled input">
+	  <label>Nasičenost krvi s kisikom</label>
+	  <input type="text" id="nasicenost" placeholder="97">
+	  <a class="ui label">%</a>
+	</div>
+	<div class="ui right labeled input">
+	  <label>Opravljalec meritev</label>
+	  <input type="text" id="merilec" placeholder="Janez Novak">
+	</div><br>
+  <div class="ui submit button" id="shraniMeritev">Shrani</div>
+ </div>
+</div>
 <div class="najdiZdravnika" style="display: none;">
  <div class="ui warning form segment">
-    <div class="field">
+    <div class="ui right labeled input">
       <label>Priimek</label>
       <input type="text" id="priimekZdravnika" placeholder="Novak">
     </div>
-	<div class="field">
+	<div class="ui right labeled input">
       <label>Licenca</label>
       <select id="DdlSpecialnost" name="DdlSpecialnost">
 	<option value="-1" selected="selected">-- vse --</option>
@@ -152,7 +180,6 @@
 	<option value="49">Urgentna medicina</option>
 	<option value="50">Urologija</option>
 	<option value="51">Zobne bolezni in endodontija</option>
-
 </select>
     </div>
   <div class="ui submit button" id="najdi">Najdi</div>

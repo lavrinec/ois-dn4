@@ -16,9 +16,7 @@ function getSessionId() {
 }
 $(document)
   .ready(function(){
-  $('#napredek').progress({
-  percent: 0
-});
+  napredek(0);
     $('.menu a.item')
       .on('click', function() {
         if(!$(this).hasClass('dropdown')) {
@@ -34,62 +32,63 @@ $(document)
     ;
 	$("#pregled").click(function(){
 		$(".pregled").show();
+		$(".seznam").show();
 		$(".dodajBolnika").hide();
 		$(".dodajMeritev").hide();
 		$(".najdiZdravnika").hide();
+		$("#napakaa").hide();
+		$("#opravljeno").hide();
 	});
 	$("#dodajBolnika").click(function(){
 		$(".pregled").hide();
+		$(".seznam").hide();
 		$(".dodajBolnika").show();
 		$(".dodajMeritev").hide();
 		$(".najdiZdravnika").hide();
+		$("#napakaa").hide();
+		$("#opravljeno").hide();
 	});
 	$("#dodajMeritev").click(function(){
 		$(".pregled").hide();
+		$(".seznam").show();
 		$(".dodajBolnika").hide();
 		$(".dodajMeritev").show();
 		$(".najdiZdravnika").hide();
+		$("#napakaa").hide();
+		$("#opravljeno").hide();
 	});
 	$("#najdiZdravnika").click(function(){
 		$(".pregled").hide();
+		$(".seznam").hide();
 		$(".dodajBolnika").hide();
 		$(".dodajMeritev").hide();
 		$(".najdiZdravnika").show();
+		$("#napakaa").hide();
+		$("#opravljeno").hide();
 	});
-	$('.ui.dropdown')
-      .dropdown()
-    ;
-	$('#napredek').progress({
-  percent: 100
-});
+	$('.ui.dropdown').dropdown();
+	napredek(100);
 $("#potrdi").click(function(){
-$('#napredek').progress({
-  percent: 1
-});
+napredek(5);
 sessionId=getSessionId();
 var ime=$("#ime").val();
 var priimek=$("#priimek").val();
 var datum=$("#datum").val();
-$('#napredek').progress({
-  percent: 15
-});
+var ehrr;
 $.ajaxSetup({
     headers: {
         "Ehr-Session": sessionId
     }
 });
-$('#napredek').progress({
-  percent: 30
-});
+napredek(30);
 $.ajax({
     url: baseUrl + "/ehr",
     type: 'POST',
     success: function (data) {
         var ehrId = data.ehrId;
+		ehrr=ehrId;
         $(".headerer").html("EHR: " + ehrId);
-$('#napredek').progress({
-  percent: 60
-});
+napredek(60);
         // build party data
         var partyData = {
             firstNames: ime,
@@ -100,9 +99,7 @@ $('#napredek').progress({
                 value: ehrId
             }]
         };
-		$('#napredek').progress({
-  percent: 75
-});
+		napredek(75);
         $.ajax({
             url: baseUrl + "/demographics/party",
             type: 'POST',
@@ -110,75 +107,109 @@ $('#napredek').progress({
             data: JSON.stringify(partyData),
             success: function (party) {
                 if (party.action == 'CREATE') {
-                    $(".resultat").html("Created: " + party.meta.href);
+                    $(".resultat").html("Narejeno: " + party.meta.href);
 					$("#napakaa").hide();
 					$("#opravljeno").show();
-					$('#napredek').progress({
-  percent: 100
-});
+					$("#ime").val('');
+					$("#priimek").val('');
+					$("#datum").val('');
+					$("#seznamBolnikov").append('<option class="item" value="'+ehrr+'">'+ime+' '+priimek+'</option>');
+					$(".menu:not(.ui)").append('<div class="item" data-value="'+ehrr+'">'+ime+' '+priimek+'</div>');
+					napredek(100);
                 } else{
 					$(".resultat").html(party.action+": " + party.meta.href);
 					$("#napakaa").show();
 					$("#opravljeno").hide();
-					$('#napredek').progress({
-  percent: 98
-});
+					napredek(98);
 				}
             },
 		    error: function(err) {
 				$(".resultat").html(JSON.parse(err.responseText).userMessage);
 				$("#napakaa").show();
 				$("#opravljeno").hide();
-				$('#napredek').progress({
-  percent: 99
-});
+				napredek(99);
 			}
         });
     }
 });
 });
 $("#najdi").click(function(){
-$('#napredek').progress({
-  percent: 1
-});
 $("#nakladanje").show();
 $.ajaxPrefilter(function(options) {
   if(options.crossDomain && jQuery.support.cors) {
     var http = (window.location.protocol === 'http:' ? 'http:' : 'https:');
     options.url = http + '//cors-anywhere.herokuapp.com/' + options.url;
-	$('#napredek').progress({
-  percent: 15
-});
     //options.url = "http://cors.corsproxy.io/url=" + options.url;
   }
 });
 $.get(
     'http://www.zdravniskazbornica.si/iskalnik/iskalnik.aspx?priimek='+$("#priimekZdravnika").val()+'&licencaId='+$("#DdlSpecialnost").val(),
     function(response) {
-	$('#napredek').progress({
-  percent: 60
-});
         $(response).find("#tblEmpty").each(function(){
 			$(rezultatiIskanja).html(this);
 		});
-		$('#napredek').progress({
-  percent: 80
-});
 		 $(response).find("#LvZdravniki_groupPlaceholderContainer").each(function(){
 			$(rezultatiIskanja).html(this);
 		});
-		$('#napredek').progress({
-  percent: 100
-});
 		$("#nakladanje").hide();
 });
-$('#napredek').progress({
-  percent: 100
+});
+$("#shraniMeritev").click(function(){
+napredek(1);
+sessionId=getSessionId();
+$.ajaxSetup({
+    headers: {
+        "Ehr-Session": sessionId
+    }
+});
+napredek(15);
+var compositionData = {
+    "ctx/time": $("#datumMeritve").val(),
+    "ctx/language": "en",
+    "ctx/territory": "CA",
+    "vital_signs/body_temperature/any_event/temperature|magnitude": $("#temp").val(),
+    "vital_signs/body_temperature/any_event/temperature|unit": "°C",
+    "vital_signs/blood_pressure/any_event/systolic": $("#visoki").val(),
+    "vital_signs/blood_pressure/any_event/diastolic": $("#niski").val(),
+    "vital_signs/height_length/any_event/body_height_length": $("#visina").val(),
+    "vital_signs/body_weight/any_event/body_weight": $("#teza").val(),
+	"vital_signs/indirect_oximetry:0/spo2|numerator": $("#nasicenost").val()
+};
+napredek(42);
+var ehrId=$("#seznamBolnikov").val();
+var queryParams = {
+    "ehrId": ehrId,
+    templateId: 'Vital Signs',
+    format: 'FLAT',
+    committer: $("#merilec").val()
+};
+napredek(71);
+$.ajax({
+    url: baseUrl + "/composition?" + $.param(queryParams),
+    type: 'POST',
+    contentType: 'application/json',
+    data: JSON.stringify(compositionData),
+    success: function (party) {
+					$(".resultat").html("Shranjeno: " + party.meta.href);
+					$("#napakaa").hide();
+					$("#opravljeno").show();
+					$(".headerer").html("EHR: " + ehrId);
+					napredek(100);
+            },
+		    error: function(err) {
+				$(".resultat").html(JSON.parse(err.responseText).userMessage);
+				$("#napakaa").show();
+				$("#opravljeno").hide();
+				napredek(99);
+			}
 });
 });
   });
 function showUser(str) {
+napredek(99);
+}
+function napredek(str) {
 $('#napredek').progress({
-  percent: 99
+  percent: str
 });
 }
