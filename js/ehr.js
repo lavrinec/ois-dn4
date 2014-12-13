@@ -205,8 +205,44 @@ $.ajax({
 });
 });
   });
-function showUser(str) {
-napredek(99);
+function showUser(ehrId) {
+sessionId=getSessionId();
+$.ajaxSetup({
+    headers: {
+        "Ehr-Session": sessionId
+    }
+});
+$.ajax({
+    url: baseUrl + "/view/" + ehrId + "/body_temperature",
+    type: 'GET',
+    success: function (res) {
+	var table=[],podatki=[];
+	for (var i in res) {
+		table[i]=res[i].time.substring(0, 10);
+		podatki[i]=res[i].temperature;
+	}
+		if (res.length > 0) {
+			var barChartData = {
+		labels : table,
+		datasets : [
+			{
+				fillColor : "rgba(220,220,220,0.35)",
+				strokeColor : "rgba(151,187,205,0.36)",
+				highlightFill : "rgba(180,187,180,0.37)",
+				highlightStroke : "rgba(151,187,205,1)",
+				data : podatki
+			}
+		]
+
+	}
+			var ctx = document.getElementById("canvas").getContext("2d");
+		window.myBar = new Chart(ctx).Bar(barChartData, {
+			responsive : true,
+			scaleBeginAtZero : false,
+			scaleStartValue : 34
+		});
+    }}
+		});
 }
 function napredek(str) {
 $('#napredek').progress({
