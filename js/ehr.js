@@ -14,8 +14,7 @@ function getSessionId() {
     });
     return response.responseJSON.sessionId;
 }
-$(document)
-  .ready(function(){
+$(document).ready(function(){
   napredek(0);
     $('.menu a.item')
       .on('click', function() {
@@ -67,6 +66,7 @@ $(document)
 		$("#opravljeno").hide();
 	});
 	$('.ui.dropdown').dropdown();
+	showUser('5ed818e4-82d0-481d-b838-bf45f8db7082');
 	napredek(100);
 $("#potrdi").click(function(){
 napredek(5);
@@ -206,12 +206,14 @@ $.ajax({
 });
   });
 function showUser(ehrId) {
+napredek(5);
 sessionId=getSessionId();
 $.ajaxSetup({
     headers: {
         "Ehr-Session": sessionId
     }
 });
+napredek(15);
 $.ajax({
     url: baseUrl + "/view/" + ehrId + "/body_temperature",
     type: 'GET',
@@ -243,6 +245,7 @@ $.ajax({
 		});
     }}
 		});
+		napredek(30);
 }
 function napredek(str) {
 $('#napredek').progress({
