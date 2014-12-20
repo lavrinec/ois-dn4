@@ -237,7 +237,7 @@ $.ajax({
 		]
 
 	}
-			var ctx = document.getElementById("canvas").getContext("2d");
+			var ctx = document.getElementById("prvi").getContext("2d");
 		window.myBar = new Chart(ctx).Bar(barChartData, {
 			responsive : true,
 			scaleBeginAtZero : false,
@@ -246,6 +246,68 @@ $.ajax({
     }}
 		});
 		napredek(30);
+		$.ajax({
+    url: baseUrl + "/view/" + ehrId + "/blood_pressure",
+    type: 'GET',
+    success: function (res) {
+	var table=[],podatki=[];
+	for (var i in res) {
+		table[i]=res[i].time.substring(0, 10);
+		podatki[i]=res[i].systolic;
+	}
+		if (res.length > 0) {
+			var barChartData = {
+		labels : table,
+		datasets : [
+			{
+				fillColor : "rgba(220,220,220,0.35)",
+				strokeColor : "rgba(151,187,205,0.36)",
+				highlightFill : "rgba(180,187,180,0.37)",
+				highlightStroke : "rgba(151,187,205,1)",
+				data : podatki
+			}
+		]
+
+	}
+			var ctx = document.getElementById("drugi").getContext("2d");
+		window.myBar = new Chart(ctx).Bar(barChartData, {
+			responsive : true,
+			scaleBeginAtZero : false,
+		});
+    }}
+		});
+		napredek(53);
+		$.ajax({
+    url: baseUrl + "/view/" + ehrId + "/blood_pressure",
+    type: 'GET',
+    success: function (res) {
+	var table=[],podatki=[];
+	for (var i in res) {
+		table[i]=res[i].time.substring(0, 10);
+		podatki[i]=res[i].diastolic;
+	}
+		if (res.length > 0) {
+			var barChartData = {
+		labels : table,
+		datasets : [
+			{
+				fillColor : "rgba(220,220,220,0.35)",
+				strokeColor : "rgba(151,187,205,0.36)",
+				highlightFill : "rgba(180,187,180,0.37)",
+				highlightStroke : "rgba(151,187,205,1)",
+				data : podatki
+			}
+		]
+
+	}
+			var ctx = document.getElementById("tretji").getContext("2d");
+		window.myBar = new Chart(ctx).Bar(barChartData, {
+			responsive : true,
+			scaleBeginAtZero : false,
+		});
+    }}
+		});
+		napredek(74);
 }
 function napredek(str) {
 $('#napredek').progress({
