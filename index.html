@@ -51,6 +51,12 @@
   </div>
 </div>
 <div class="pregled">
+<div id="celiakija" class="ui error message"  style="display: none;">
+  <div class="content">
+    <div class="header">SUM</div>
+    <p><div class="headerer">Glede na krvno sliko obstaja sum na <a href="http://sl.wikipedia.org/wiki/Celiakija">celiakijo!</a></div></p>
+  </div>
+</div>
 <div id="opozorilo" class="ui info message"  style="display: none;">
   <div class="header">Opozorila</div>
   <p><div id="opozorila"></div></p>
@@ -77,6 +83,48 @@
   <a  id="cetrtii" class="ui top left attached label">Indeks telesne mase</a>
 			<canvas id="cetrti"></canvas>
 		</div>
+</div>
+<div id="krvnaSlika" class="ui segment item" style="min-height: 8rem;" style="display: none;">
+<a  id="cetrtii" class="ui top center attached label">Krvna slika</a>
+<table class="ui definition table">
+  <thead>
+    <tr><th></th>
+    <th>Rezultati</th>
+    <th>Pricakovane vrednosti</th>
+  </tr></thead>
+  <tbody>
+    <tr>
+      <td>Levkociti</td>
+      <td id="prva"></td>
+      <td>4-10</td>
+    </tr>
+    <tr>
+      <td>Eritrociti</td>
+      <td id="druga"></td>
+      <td>4,5-5,9</td>
+    </tr>
+	<tr>
+      <td>Trombociti</td>
+      <td id="tretja"></td>
+      <td>140-340</td>
+    </tr>
+    <tr>
+      <td>Hemoglobin</td>
+      <td id="cetrta"></td>
+      <td>140-175</td>
+    </tr>
+	<tr>
+      <td>EMA IgA</td>
+      <td id="peta"></td>
+      <td>Negativno</td>
+    </tr>
+    <tr>
+      <td>tTG IgA</td>
+      <td id="sesta"></td>
+      <td><9</td>
+    </tr>
+  </tbody>
+</table><br>
 </div></div>
 <div class="dodajBolnika" style="display: none; width: 85%;">
  <div class="ui warning form segment">

@@ -211,8 +211,10 @@ $.ajax({
   });
 function showUser(ehrId) {
 napredek(5);
+$("#krvnaSlika").hide();
 $("#opozorila").html("");
 $("#opozorilo").hide();
+$("#celiakija").hide();
 sessionId=getSessionId();
 $.ajaxSetup({
     headers: {
@@ -429,7 +431,54 @@ $.ajax({
     }});
     }
 	});
-		napredek(100);
+	var kri;
+	napredek(100);
+	var datoteka = new XMLHttpRequest();
+datoteka.open("GET", "kri/"+ehrId+".txt", true);
+datoteka.onreadystatechange = function (){
+    if(datoteka.readyState === 4){
+		$("#krvnaSlika").show();
+        kri = datoteka.responseText.split('\n');
+		$("#prva").html(kri[0]);
+		if(kri[0]<4||kri[0]>10)
+			document.getElementById("prva").style.color = "#ff0000";
+		else
+			document.getElementById("prva").style.color = "#00FF00";
+		$("#druga").html(kri[1]);
+		if(kri[1]<4.5||kri[1]>5.9)
+			document.getElementById("druga").style.color = "#ff0000";
+		else
+			document.getElementById("druga").style.color = "#00FF00";
+		$("#tretja").html(kri[2]);
+		if(kri[2]<140||kri[2]>340)
+			document.getElementById("tretja").style.color = "#ff0000";
+		else
+			document.getElementById("tretja").style.color = "#00FF00";
+		$("#cetrta").html(kri[3]);
+		if(kri[2]<140||kri[2]>175)
+			document.getElementById("cetrta").style.color = "#ff0000";
+		else
+			document.getElementById("cetrta").style.color = "#00FF00";
+		if(kri[4]==0){
+			$("#peta").html("Negativno");
+			document.getElementById("peta").style.color = "#00FF00";
+		}
+		else{
+			$("#peta").html("Pozitivno");
+			document.getElementById("peta").style.color = "#ff0000";
+			if(kri[2]<140||kri[2]>175)
+				$("#celiakija").show();
+		}
+		$("#sesta").html(kri[5]);
+		if(kri[5]>9)
+			document.getElementById("sesta").style.color = "#ff0000";
+		else
+			document.getElementById("sesta").style.color = "#00FF00";
+    }
+}
+datoteka.send();
+
+		
 		
 }
 function napredek(str) {
