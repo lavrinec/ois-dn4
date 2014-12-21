@@ -463,7 +463,7 @@ datoteka.onreadystatechange = function (){
 			$("#peta").html("Negativno");
 			document.getElementById("peta").style.color = "#00FF00";
 		}
-		else{
+		else if(kri[4]==1){
 			$("#peta").html("Pozitivno");
 			document.getElementById("peta").style.color = "#ff0000";
 			if(kri[2]<140||kri[2]>175)
