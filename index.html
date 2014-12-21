@@ -32,8 +32,9 @@
 </div>
 <div class="seznam">Bolniki: 
 <select id="seznamBolnikov" class="ui searchable floating dropdown labeled button" tabindex="1" onchange="showUser(this.value)">
-    <option class="item" value="5ed818e4-82d0-481d-b838-bf45f8db7082"><div class="ui red empty circular label"></div>Srecko Debevc</option>
+    <option class="item" value="5ed818e4-82d0-481d-b838-bf45f8db7082" selected>Srecko Debevc</option>
     <option class="item" value="d77d2db5-fac3-47fe-8526-2ccb857c31b7">Janez Novak</option>
+	<option class="item" value="624ebd14-2029-4106-a2a1-4506a636c28e">Debeli Debelinko</option>
 </select></div>
 <div id="opravljeno" class="ui success message"  style="display: none;">
   <div class="content">
@@ -50,22 +51,31 @@
   </div>
 </div>
 <div class="pregled">
-<div class="ui info message"  style="display: none;">
-  <div class="header">Info Message</div>
-  <p>Example description</p>
+<div id="opozorilo" class="ui info message"  style="display: none;">
+  <div class="header">Opozorila</div>
+  <p><div id="opozorila"></div></p>
 </div><br>
 <div class="ui divided relaxed horizontal list"><div></div>
 <div class="ui segment item" style="min-height: 8rem;">
+  <a class="ui top left attached label">AQL poizvedba </a>
+			<div id="aql"></div>
+		</div>
+		<br>
+<div id="prvii" class="ui segment item" style="min-height: 8rem;">
   <a class="ui top left attached label">Telesne temperature</a>
-			<canvas id="prvi" height="300" width="300"></canvas>
+			<canvas id="prvi"></canvas>
 		</div>
-<div class="ui segment item" style="min-height: 8rem;">
+<div id="drugii" class="ui segment item" style="min-height: 8rem;">
   <a class="ui top left attached label">Sistolični krvni tlak</a>
-			<canvas id="drugi" height="300" width="300"></canvas>
+			<canvas id="drugi"></canvas>
 		</div>
-<div class="ui segment item" style="min-height: 8rem;">
+<div id="tretjii" class="ui segment item" style="min-height: 8rem;">
   <a class="ui top left attached label">Diastolični krvni tlak</a>
-			<canvas id="tretji" height="300" width="300"></canvas>
+			<canvas id="tretji"></canvas>
+		</div>
+		<div class="ui segment item" style="min-height: 8rem;">
+  <a  id="cetrtii" class="ui top left attached label">Indeks telesne mase</a>
+			<canvas id="cetrti"></canvas>
 		</div>
 </div></div>
 <div class="dodajBolnika" style="display: none; width: 85%;">

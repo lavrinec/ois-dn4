@@ -36,6 +36,7 @@ $(document).ready(function(){
 		$(".dodajMeritev").hide();
 		$(".najdiZdravnika").hide();
 		$("#napakaa").hide();
+		$("#opozorilo").hide();
 		$("#opravljeno").hide();
 	});
 	$("#dodajBolnika").click(function(){
@@ -45,6 +46,7 @@ $(document).ready(function(){
 		$(".dodajMeritev").hide();
 		$(".najdiZdravnika").hide();
 		$("#napakaa").hide();
+		$("#opozorilo").hide();
 		$("#opravljeno").hide();
 	});
 	$("#dodajMeritev").click(function(){
@@ -54,6 +56,7 @@ $(document).ready(function(){
 		$(".dodajMeritev").show();
 		$(".najdiZdravnika").hide();
 		$("#napakaa").hide();
+		$("#opozorilo").hide();
 		$("#opravljeno").hide();
 	});
 	$("#najdiZdravnika").click(function(){
@@ -63,6 +66,7 @@ $(document).ready(function(){
 		$(".dodajMeritev").hide();
 		$(".najdiZdravnika").show();
 		$("#napakaa").hide();
+		$("#opozorilo").hide();
 		$("#opravljeno").hide();
 	});
 	$('.ui.dropdown').dropdown();
@@ -207,6 +211,8 @@ $.ajax({
   });
 function showUser(ehrId) {
 napredek(5);
+$("#opozorila").html("");
+$("#opozorilo").hide();
 sessionId=getSessionId();
 $.ajaxSetup({
     headers: {
@@ -222,8 +228,13 @@ $.ajax({
 	for (var i in res) {
 		table[i]=res[i].time.substring(0, 10);
 		podatki[i]=res[i].temperature;
+		if(podatki[i]>37.5){
+			$("#opozorila").append("Visoka vrocina dne: "+table[i]+"<br>");
+			$("#opozorilo").show();
+		}
 	}
 		if (res.length > 0) {
+		$("#prvii").show();
 			var barChartData = {
 		labels : table,
 		datasets : [
@@ -243,7 +254,9 @@ $.ajax({
 			scaleBeginAtZero : false,
 			scaleStartValue : 34
 		});
-    }}
+    }else{
+		$("#prvii").hide();
+	}}
 		});
 		napredek(30);
 		$.ajax({
@@ -254,8 +267,17 @@ $.ajax({
 	for (var i in res) {
 		table[i]=res[i].time.substring(0, 10);
 		podatki[i]=res[i].systolic;
+		if(podatki[i]>145){
+			$("#opozorila").append("Visok sintokticni krvni tlak dne: "+table[i]+"<br>");
+			$("#opozorilo").show();
+		}
+		if(podatki[i]<105){
+			$("#opozorila").append("Nizek sintokticni krvni tlak dne: "+table[i]+"<br>");
+			$("#opozorilo").show();
+		}
 	}
 		if (res.length > 0) {
+		$("#drugii").show();
 			var barChartData = {
 		labels : table,
 		datasets : [
@@ -274,7 +296,9 @@ $.ajax({
 			responsive : true,
 			scaleBeginAtZero : false,
 		});
-    }}
+    }else{
+		$("#drugii").hide();
+	}}
 		});
 		napredek(53);
 		$.ajax({
@@ -285,8 +309,17 @@ $.ajax({
 	for (var i in res) {
 		table[i]=res[i].time.substring(0, 10);
 		podatki[i]=res[i].diastolic;
+		if(podatki[i]>95){
+			$("#opozorila").append("Visok disokticni krvni tlak dne: "+table[i]+"<br>");
+			$("#opozorilo").show();
+		}
+		if(podatki[i]<55){
+			$("#opozorila").append("Nizek disokticni krvni tlak dne: "+table[i]+"<br>");
+			$("#opozorilo").show();
+		}
 	}
 		if (res.length > 0) {
+		$("#tretjii").show();
 			var barChartData = {
 		labels : table,
 		datasets : [
@@ -303,11 +336,101 @@ $.ajax({
 			var ctx = document.getElementById("tretji").getContext("2d");
 		window.myBar = new Chart(ctx).Bar(barChartData, {
 			responsive : true,
-			scaleBeginAtZero : false,
+			scaleBeginAtZero : false
 		});
-    }}
+    }else{
+		$("#tretjii").hide();
+	}}
 		});
 		napredek(74);
+		var aql = "SELECT " +
+    "c/context/start_time as time " +
+    "FROM EHR[ehr_id/value = '" + ehrId + "'] CONTAINS COMPOSITION c ";
+$.ajax({
+    url: baseUrl + "/query?" + $.param({"aql": aql}),
+    type: 'GET',
+    success: function (res) {
+        var rows = res.resultSet;
+		$("#aql").html("Vseh vnosov za to osebo je: "+rows.length+"<br>");
+    },
+	error: function(err) {
+				$(".resultat").html(JSON.parse(err.responseText).userMessage);
+				$("#napakaa").show();
+				$("#opravljeno").hide();
+			}
+});
+napredek(80);
+var indeksi=[], visine=[], datumi=[],datum,postavitev=0,uporabni=[];
+$.ajax({
+    url: baseUrl + "/view/" + ehrId + "/height",
+    type: 'GET',
+    success: function (res) {
+	for (var i in res) {
+		datum=res[i].time;
+		visine[datum]=res[i].height;
+		datumi[i]=datum;
+	}
+	$.ajax({
+    url: baseUrl + "/view/" + ehrId + "/weight",
+    type: 'GET',
+    success: function (ress) {
+	for (var i in ress) {
+		datum=ress[i].time;
+		if(visine[datum]>30&&visine[datum]<280){
+			//$("#aql").append(""+visine[datum]+"<br><br>");
+			indeksi[postavitev]=ress[i].weight/(visine[datum]*visine[datum]/10000);
+			uporabni[postavitev]=datum.toString().substring(0, 10);
+			//$("#aql").append(""+indeksi[postavitev]+"<br><br>");
+			if(indeksi[postavitev]<18.5){
+				$("#opozorila").append("Podhranjenost dne: "+uporabni[postavitev]+"<br>");
+				$("#opozorilo").show();
+			}
+			else if(indeksi[postavitev]>40){
+				$("#opozorila").append("Ekstremna debelost dne: "+uporabni[postavitev]+"<br>");
+				$("#opozorilo").show();
+			}
+			else if(indeksi[postavitev]>30){
+				$("#opozorila").append("Debelost dne: "+uporabni[postavitev]+"<br>");
+				$("#opozorilo").show();
+			}
+			else if(indeksi[postavitev]>25){
+				$("#opozorila").append("Prekomerna telesna teza dne: "+uporabni[postavitev]+"<br>");
+				$("#opozorilo").show();
+			}
+			postavitev++;
+			//$("#aql").append("Vseh "+postavitev+" vnosov za "+uporabni[postavitev-1]+": "+indeksi[postavitev-1]+"<br><br>");
+		}
+	}
+	if (uporabni.length > 0) {
+	//$("#aql").append("BLABLA<br><br>");
+	$("#cetrtii").show();
+			var barChartData = {
+		labels : uporabni,
+		datasets : [
+			{
+				fillColor : "rgba(220,220,220,0.35)",
+				strokeColor : "rgba(151,187,205,0.36)",
+				highlightFill : "rgba(180,187,180,0.37)",
+				highlightStroke : "rgba(151,187,205,1)",
+				data : indeksi
+			}
+		]
+
+	}
+			var ctx = document.getElementById("cetrti").getContext("2d");
+		window.myBar = new Chart(ctx).Bar(barChartData, {
+			responsive : true,
+			scaleBeginAtZero : false,
+			scaleStartValue : 15
+		});
+    }else{
+		$("#cetrtii").hide();
+	}
+    }});
+    }
+	});
+		napredek(100);
+		
 }
 function napredek(str) {
 $('#napredek').progress({
